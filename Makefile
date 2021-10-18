@@ -4,8 +4,8 @@ tag?=latest
 build:
 	docker build -t andrebq/nats-tools:$(tag) .
 
+# user should have logged in to ghcr before calling this
 push-github-registry: build
-	echo $$GITHUB_TOKEN | docker login ghcr.io -u andrebq --password-stdin
 	docker tag andrebq/nats-tools:$(tag) ghcr.io/andrebq/nats-tools:$(tag)
 	docker push ghcr.io/andrebq/nats-tools:$(tag)
 
