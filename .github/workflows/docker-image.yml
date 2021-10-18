@@ -29,8 +29,8 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Publish the Docker image
-      run: make push-github-registry
+      run: make push-github-latest
 
     - name: Publish release tag
-      if: env.HEAD_TAG != ''
-      run: make build tag=$(${{env.HEAD_TAG}}) && make push-github-registry tag=$(${{env.HEAD_TAG}})
+      if: ${{github.event.ref_type == 'tag'}}
+      run: make build tag=latest && make push-github-registry srcTag=latest ref=$(${{github.ref}})
