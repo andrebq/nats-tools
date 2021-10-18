@@ -4,6 +4,9 @@ on:
   push:
     branches: [ main ]
 
+  push:
+    tags: ['*']
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -29,3 +32,7 @@ jobs:
 
     - name: Publish the Docker image
       run: make push-github-registry
+
+    - name: Publish release tag
+      if: env.HEAD_TAG != ''
+      run: make build tag=$(${{env.HEAD_TAG}}) && make push-github-registry tag=$(${{env.HEAD_TAG}})
